@@ -22,7 +22,7 @@ var vm = new Vue({
         getItemsByPage: function  (page, size) {
             var self = this;
             $.ajax({
-                url: '/api/v2.0/' + this.table,
+                url: '/api/' + this.table,
                 data: {
                     page: page || '1',
                     size: size || '10'
@@ -37,7 +37,7 @@ var vm = new Vue({
             var self = this;
             if (confirm('确认要删除“' + (item.name || item.content) + '”？删除后不可恢复！')) {
                 $.ajax({
-                    url: '/api/v2.0/' + this.table.slice(0, -1) + '/' + item.id,
+                    url: '/api/' + this.table.slice(0, -1) + '/' + item.id,
                     type: 'DELETE',
                     success: function() {
                         self.items.$remove(item);

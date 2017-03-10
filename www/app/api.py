@@ -7,7 +7,7 @@ import logging
 from aiohttp import ClientSession, web
 
 from app.filters import marked_filter as markdown_highlight
-from app.frame import get, post
+from app.frame import get, post, put, delete
 from app.frame.halper import Page, set_valid_value, check_user, check_string, check_email_and_password
 from app.frame.errors import APIValueError, APIResourceNotFoundError
 from app.models import User, Blog, Comment, Oauth
@@ -92,13 +92,14 @@ async def api_get_items(table, *, page='1', size='10'):
 
 
 # 取某篇博客
-@get('/api/blogs/{id}')
+@get('/api/blog/{id}')
 async def api_get_blog(id):
-    return await Blog.find(id)
+    blog = await Blog.find(id)
+    return blog.to_json()
 
 
 # 创建新博客
-@post('/api/blogs')
+@post('/api/blog/')
 async def api_create_blog(request, *, name, summary, content):
     check_user(request.__user__)
     check_string(name=name, summary=summary, content=content)
@@ -109,7 +110,7 @@ async def api_create_blog(request, *, name, summary, content):
 
 
 # 修改某篇博客
-@post('/api/blogs/{id}')
+@put('/api/blog/{id}')
 async def api_update_blog(id, request, *, name, summary, content):
     check_user(request.__user__)
     check_string(name=name, summary=summary, content=content)
@@ -122,7 +123,7 @@ async def api_update_blog(id, request, *, name, summary, content):
 
 
 # 取某篇博客的所有评论
-@get('/api/blogs/{id}/comments')
+@get('/api/blog/{id}/comments')
 async def api_get_blog_comments(id):
     comments = await Comment.findAll('blog_id = ?', [id], orderBy='created_at desc')
     for c in comments:
@@ -131,7 +132,7 @@ async def api_get_blog_comments(id):
 
 
 # 创建新评论
-@post('/api/blogs/{id}/comments')
+@post('/api/blog/{id}/comment')
 async def api_create_comment(id, request, *, content, time):
     user = request.__user__
     check_user(user, check_admin=False)
@@ -148,9 +149,10 @@ async def api_create_comment(id, request, *, content, time):
 
 
 # 删除博客或评论
-@post('/api/{table}/{id}/delete')
+@delete('/api/{table}/{id}')
 async def api_delete_item(table, id, request):
-    models = {'users': User, 'blogs': Blog, 'comments': Comment, 'oauth': Oauth}
+    logging.info('begin to delete')
+    models = {'user': User, 'blog': Blog, 'comment': Comment, 'oauth': Oauth}
     check_user(request.__user__)
     item = await models[table].find(id)
     if item:

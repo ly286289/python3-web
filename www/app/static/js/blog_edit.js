@@ -13,7 +13,7 @@ var vm = new Vue({
             return location.pathname.slice(-5) === '/edit' ? 'PUT' : 'POST';
         },
         url: function () {
-            return '/api/v2.0/blog/' + ((this.method === 'PUT') ? getUrlParams('id') : '');
+            return '/api/blog/' + ((this.method === 'PUT') ? getUrlParams('id') : '');
         }
     },
     ready: function () {

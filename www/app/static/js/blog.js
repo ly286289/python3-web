@@ -16,7 +16,7 @@ var blog = new Vue({
                 return showAlert(self, '请输入评论内容！');
             }
             $.ajax({
-                url: '/api/v2.0/blog/' + self.id + '/comment',
+                url: '/api/blog/' + self.id + '/comment',
                 type: 'POST',
                 data: {
                     content: self.comment,
@@ -35,7 +35,7 @@ var blog = new Vue({
     ready: function() {
         var self = this;
         $.ajax({
-            url: '/api/v2.0/blog/' + self.id + '/comments',
+            url: '/api/blog/' + self.id + '/comments',
             success: function(data) {
                 if (data.error) {
                     return alert(data.message || data.error || data);

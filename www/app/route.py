@@ -18,12 +18,7 @@ async def about():
 
 # 首页
 @get('/')
-async def index():
-    return 'redirect:/bootstrap/'
-
-
-@get('/{template}/')
-async def home(template, *, tag='', page='1', size='10'):
+async def index(*, tag='', page='1', size='10'):
     num = await Blog.countRows(where="position(? in `summary`)", args=[tag])
     page = Page(num, set_valid_value(page), set_valid_value(size, 10))
     if num == 0:
@@ -31,7 +26,7 @@ async def home(template, *, tag='', page='1', size='10'):
     else:
         blogs = await Blog.findAll("position(? in `summary`)", [tag], orderBy='created_at desc', limit=(page.offset, page.limit))
     return {
-        '__template__': '%s-blogs.html' % (template),
+        '__template__': 'uk-blogs.html',
         'blogs': blogs,
         'page': page,
         'tag': tag
@@ -39,59 +34,59 @@ async def home(template, *, tag='', page='1', size='10'):
 
 
 # 注册页面
-@get('/{template}/register')
-def register(template):
+@get('/register')
+def register():
     return {
-        '__template__': '%s-register.html' % (template)
+        '__template__': 'uk-register.html'
     }
 
 
 # 登陆页面
-@get('/{template}/signin')
-def signin(template):
+@get('/signin')
+def signin():
     return {
-        '__template__': '%s-signin.html' % (template)
+        '__template__': 'uk-signin.html'
     }
 
 
 # 博客页面
-@get('/{template}/blog/{id}')
-async def get_bolg(template, id):
+@get('/blog/{id}')
+async def get_bolg(id):
     blog = await Blog.find(id)
     return {
-        '__template__': '%s-blog.html' % (template),
+        '__template__': 'uk-blog.html',
         'blog': blog
     }
 
 
 # 管理页面
-@get('/{template}/manage')
-def manage(template):
-    return 'redirect:/%s/manage/blogs' % (template)
+@get('/manage')
+def manage():
+    return 'redirect:/manage/blogs'
 
 
 # 管理用户、博客、评论
-@get('/{template}/manage/{table}')
-def manage_table(template, table):
+@get('/manage/{table}')
+def manage_table(table):
     return {
-        '__template__': '%s-manage.html' % (template),
+        '__template__': 'uk-manage.html',
         'table': table
     }
 
 
 # 创建博客
-@get('/{template}/manage/blogs/create')
-def manage_create_blog(template):
+@get('/manage/blogs/create')
+def manage_create_blog():
     return {
-        '__template__': '%s-blog_edit.html' % (template)
+        '__template__': 'uk-blog_edit.html'
     }
 
 
 # 修改博客
-@get('/{template}/manage/blogs/edit')
-def manage_edit_blog(template):
+@get('/manage/blogs/edit')
+def manage_edit_blog():
     return {
-        '__template__': '%s-blog_edit.html' % (template)
+        '__template__': 'uk-blog_edit.html'
     }
 
 
