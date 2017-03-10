@@ -1,7 +1,7 @@
 #python blog
 一个用python3.5实现的个人博客网站，内含简单的ORM框架和Web框架。
 
-此博客基本按照[廖雪峰的python3教程](http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001432170876125c96f6cc10717484baea0c6da9bee2be4000)实战部分与灰手的修改(https://github.com/moling3650/mblog)。
+此博客基本按照[廖雪峰的python3教程](http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001432170876125c96f6cc10717484baea0c6da9bee2be4000)实战部分与[灰手的修改](https://github.com/moling3650/mblog)。
 
 ###ORM框架
 简化
